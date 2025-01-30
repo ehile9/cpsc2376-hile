@@ -8,7 +8,7 @@ void doubleVector(std::vector<int>& vec);
 int calculateSum(const std::vector<int>& vec);
 void printMultiples(const std::vector<int>& vec, int multiple);
 
-int main() 
+int main()
 {
     std::vector<int> numbers;
     int choice;
@@ -24,9 +24,9 @@ int main()
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
-        switch (choice) 
+        switch (choice)
         {
-        case 1: 
+        case 1:
         {
             int num;
             std::cout << "Enter a number to add: ";
@@ -43,7 +43,7 @@ int main()
         case 4:
             std::cout << "Sum of elements: " << calculateSum(numbers) << "\n";
             break;
-        case 5: 
+        case 5:
         {
             int multiple;
             std::cout << "Enter a number to find multiples: ";
@@ -63,10 +63,10 @@ int main()
 }
 
 //Print vector function using const so that the function cannot change vector values
-void printVector(const std::vector<int>& vec) 
+void printVector(const std::vector<int>& vec)
 {
     std::cout << "Vector elements: ";
-    for (const int& num : vec) 
+    for (const int& num : vec)
     {
         std::cout << num << " ";
     }
@@ -74,9 +74,9 @@ void printVector(const std::vector<int>& vec)
 }
 
 //Double vector function
-void doubleVector(std::vector<int>& vec) 
+void doubleVector(std::vector<int>& vec)
 {
-    for (int& num : vec) 
+    for (int& num : vec)
     {
         num *= 2;
     }
@@ -84,10 +84,10 @@ void doubleVector(std::vector<int>& vec)
 }
 
 //Function to calculate the sum of the vector without changing the values
-int calculateSum(const std::vector<int>& vec) 
+int calculateSum(const std::vector<int>& vec)
 {
     int sum = 0;
-    for (const int& num : vec) 
+    for (const int& num : vec)
     {
         sum += num;
     }
@@ -95,12 +95,12 @@ int calculateSum(const std::vector<int>& vec)
 }
 
 //Function to print multiples of the number chosen by user without changing the vector
-void printMultiples(const std::vector<int>& vec, int multiple) 
+void printMultiples(const std::vector<int>& vec, int multiple)
 {
     std::cout << "Multiples of " << multiple << ": ";
-    for (const int& num : vec) 
+    for (const int& num : vec)
     {
-        if (num % multiple == 0) 
+        if (num % multiple == 0)
         {
             std::cout << num << " ";
         }
