@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <limits>  // For std::numeric_limits
 
 const std::string FILENAME = "account_balance.txt";
 
@@ -41,17 +42,38 @@ void checkBalance(double balance)
     std::cout << "Your current balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
 }
 
+// Function to get valid user input
+double getValidAmount(const std::string& prompt) 
+{
+    double amount;
+    while (true) 
+    {
+        std::cout << prompt;
+        std::cin >> amount;
+
+        // Check if input is valid
+        if (std::cin.fail()) 
+        {
+            std::cin.clear();  // Clear error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+            std::cerr << "Error: Invalid input. Please enter a numeric value." << std::endl;
+        }
+        else if (amount <= 0) 
+        {
+            std::cerr << "Error: Amount must be positive." << std::endl;
+        }
+        else 
+        {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
+            return amount;
+        }
+    }
+}
+
 // Function to deposit money
 double deposit(double balance) 
 {
-    double amount;
-    std::cout << "Enter deposit amount: ";
-    std::cin >> amount;
-    if (amount <= 0) 
-    {
-        std::cerr << "Error: Deposit amount must be positive." << std::endl;
-        return balance;
-    }
+    double amount = getValidAmount("Enter deposit amount: ");
     balance += amount;
     writeBalanceToFile(balance);
     std::cout << "Deposit successful. Your new balance is: $" << balance << std::endl;
@@ -61,36 +83,54 @@ double deposit(double balance)
 // Function to withdraw money
 double withdraw(double balance) 
 {
-    double amount;
-    std::cout << "Enter withdrawal amount: ";
-    std::cin >> amount;
-    if (amount <= 0) 
+    while (true) 
     {
-        std::cerr << "Error: Withdrawal amount must be positive." << std::endl;
-        return balance;
+        double amount = getValidAmount("Enter withdrawal amount: ");
+        if (amount > balance) 
+        {
+            std::cerr << "Error: Insufficient funds. Your balance is $" << balance << std::endl;
+        }
+        else 
+        {
+            balance -= amount;
+            writeBalanceToFile(balance);
+            std::cout << "Withdrawal successful. Your new balance is: $" << balance << std::endl;
+            return balance;
+        }
     }
-    if (amount > balance) 
+}
+
+// Function to get valid menu choice
+int getValidChoice() 
+{
+    int choice;
+    while (true) 
     {
-        std::cerr << "Error: Insufficient funds. Your balance is $" << balance << std::endl;
-        return balance;
+        std::cout << "\nMenu:\n1. Check Balance\n2. Deposit Money\n3. Withdraw Money\n4. Exit\nEnter your choice: ";
+        std::cin >> choice;
+
+        if (std::cin.fail() || choice < 1 || choice > 4) 
+        {
+            std::cin.clear();  // Clear error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+            std::cerr << "Error: Invalid choice. Please enter a number between 1 and 4." << std::endl;
+        }
+        else 
+        {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
+            return choice;
+        }
     }
-    balance -= amount;
-    writeBalanceToFile(balance);
-    std::cout << "Withdrawal successful. Your new balance is: $" << balance << std::endl;
-    return balance;
 }
 
 int main() 
 {
     double balance = readBalanceFromFile();
-    int choice;
     std::cout << "Welcome to Your Bank Account!" << std::endl;
 
-    do 
+    while (true) 
     {
-        std::cout << "\nMenu:\n1. Check Balance\n2. Deposit Money\n3. Withdraw Money\n4. Exit\nEnter your choice: ";
-        std::cin >> choice;
-
+        int choice = getValidChoice();
         switch (choice) 
         {
         case 1:
@@ -104,12 +144,8 @@ int main()
             break;
         case 4:
             std::cout << "Exiting program. Have a great day!" << std::endl;
-            break;
-        default:
-            std::cerr << "Invalid choice. Please enter a valid option." << std::endl;
+            return 0;
         }
-    } while (choice != 4);
-
-    return 0;
+    }
 }
-//Used AI to help me structure program, debug and show me how to validate user input.
+//Used AI to help me create input validation function and to clear the Cin errors
