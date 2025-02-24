@@ -91,10 +91,9 @@ bool isBoardFull(const std::vector<Token>& board)
     }
     return true;
 }
-
-// Function to check for a win
 bool checkWin(const std::vector<Token>& board, Token player)
 {
+    // Check horizontal wins
     for (int r = 0; r < ROWS; r++)
     {
         for (int c = 0; c <= COLS - 4; c++)
@@ -106,6 +105,8 @@ bool checkWin(const std::vector<Token>& board, Token player)
             }
         }
     }
+
+    // Check vertical wins
     for (int c = 0; c < COLS; c++)
     {
         for (int r = 0; r <= ROWS - 4; r++)
@@ -117,6 +118,33 @@ bool checkWin(const std::vector<Token>& board, Token player)
             }
         }
     }
+
+    // Check diagonal (bottom-left to top-right ?)
+    for (int r = 3; r < ROWS; r++) // Starts from row 3 to allow space for diagonals
+    {
+        for (int c = 0; c <= COLS - 4; c++) // Ensure we stay within board bounds
+        {
+            if (board[r * COLS + c] == player && board[(r - 1) * COLS + (c + 1)] == player &&
+                board[(r - 2) * COLS + (c + 2)] == player && board[(r - 3) * COLS + (c + 3)] == player)
+            {
+                return true;
+            }
+        }
+    }
+
+    // Check diagonal (top-left to bottom-right ?)
+    for (int r = 0; r <= ROWS - 4; r++) // Ensure space for diagonals
+    {
+        for (int c = 0; c <= COLS - 4; c++)
+        {
+            if (board[r * COLS + c] == player && board[(r + 1) * COLS + (c + 1)] == player &&
+                board[(r + 2) * COLS + (c + 2)] == player && board[(r + 3) * COLS + (c + 3)] == player)
+            {
+                return true;
+            }
+        }
+    }
+
     return false;
 }
 
@@ -176,12 +204,8 @@ void play()
     }
 }
 
-// Main function: Runs the game
-//int main()
+int main()
 {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     displayRules();
 
     while (true)
@@ -206,8 +230,6 @@ void play()
     }
 
     std::cout << "Press Enter to exit...";
-    std::cin.ignore();
-    std::cin.get();
-
     return 0;
 }
+//Used AI to debug several times, to structure the diagonal win function and to write/fix cin issues
