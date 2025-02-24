@@ -182,7 +182,7 @@ void play()
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-   /* displayRules();
+    displayRules();
 
     while (true)
     {
@@ -209,5 +209,5 @@ void play()
     std::cin.ignore();
     std::cin.get();
 
-    return 0;*/
+    return 0;
 }
