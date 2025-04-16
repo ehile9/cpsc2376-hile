@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CONNECT_FOUR_H
-#define CONNECT_FOUR_H
+#ifndef connect_Four_H
+#define connect_Four_H
 
 #include <iostream>
 #include <vector>
@@ -25,7 +25,7 @@ private:
 
 public:
     Game();
-    void play(int column);
+    bool play(int column);
     GameState status() const;
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
 };

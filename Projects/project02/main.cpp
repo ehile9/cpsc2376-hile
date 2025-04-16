@@ -1,5 +1,5 @@
 #include <iostream>
-#include "connect_four.h"
+#include "connect_Four.h"
 
 int main() 
 {
@@ -12,18 +12,28 @@ int main()
     while (game.status() == ONGOING) 
     {
         std::cout << game;
-        std::cout << "Enter column (1-7): ";
-        std::cin >> column;
 
-        if (std::cin.fail()) 
+        bool validMove = false;
+        while (!validMove)  //prevents column overflow
         {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input! Enter a number between 1-7.\n";
-            continue;
-        }
+            std::cout << "Enter column (1-7): ";
+            std::cin >> column;
 
-        game.play(column - 1);  // Convert to 0-based index
+            if (std::cin.fail() || column < 1 || column > 7)
+            {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid input! Enter a number between 1-7.\n";
+                continue;
+            }
+
+            validMove = game.play(column - 1);  // Convert to 0-based index
+
+            /*if (!validMove)
+            {
+                std::cout << "Column is full! Choose another column. \n";
+            }*/
+        }
     }
 
     std::cout << game;

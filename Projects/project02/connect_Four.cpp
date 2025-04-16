@@ -15,7 +15,7 @@ bool Game::dropPiece(int col)
             return true;
         }
     }
-    return false;
+    return false; //column is full
 }
 
 // Function to check if the board is full (for draw condition)
@@ -86,23 +86,32 @@ bool Game::checkWin(Token player) const
 }
 
 // Play Function: Executes a move
-void Game::play(int column) 
+bool Game::play(int column) 
 {
-    if (column < 0 || column >= COLS || !dropPiece(column)) 
+    if (column < 0 || column >= COLS) 
     {
-        return;  // Invalid move, ignore it.
+        std::cout << "Invalid move! Column is out of range.  Choose between 1 and 7. \n";
+        return false;  // Invalid move.
+    }
+
+    if (!dropPiece(column))
+    {
+        std::cout << "Column is full! Choose another column. \n";
+        return false;  // Message column is full
     }
     // Check if the game ended
     if (checkWin(currentPlayer)) 
     {
-        return;
+        return true;
     }
     if (isBoardFull()) 
     {
-        return;
+        return true;
     }
     // Swap Player
     currentPlayer = (currentPlayer == PLAYER_1) ? PLAYER_2 : PLAYER_1;
+
+    return true;
 }
 
 // Get Game Status
