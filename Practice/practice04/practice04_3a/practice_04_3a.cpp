@@ -3,7 +3,8 @@
 #include <string>
 #include <limits>
 
-int main() {
+int main() 
+{
     std::list<std::string> tasks;
 
     while (true) 
